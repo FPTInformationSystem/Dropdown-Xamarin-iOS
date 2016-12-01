@@ -8,9 +8,9 @@ namespace FPT.Framework.iOS.UI.DropDown
 {
 	internal sealed partial class KeyboardListener : NSObject
 	{
-		private KeyboardListener mSharedInstance = null;
+		private static KeyboardListener mSharedInstance = null;
 
-		private KeyboardListener SharedInstance
+		public static KeyboardListener SharedInstance
 		{
 			get
 			{
@@ -42,10 +42,15 @@ namespace FPT.Framework.iOS.UI.DropDown
 
 	#region Notifications
 
-	partial class KeyboardListener
+	internal partial class KeyboardListener
+	{
+		
+	}
+
+	internal partial class KeyboardListener
 	{
 
-		void StartListeningToKeyboard()
+		internal void StartListeningToKeyboard()
 		{
 			if (IsListening)
 			{
