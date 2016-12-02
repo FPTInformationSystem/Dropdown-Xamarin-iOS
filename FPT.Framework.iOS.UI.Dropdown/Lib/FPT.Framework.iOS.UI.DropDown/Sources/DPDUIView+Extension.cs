@@ -15,7 +15,7 @@ namespace FPT.Framework.iOS.UI.DropDown
 			view.AddConstraints(NSLayoutConstraint.FromVisualFormat(format, options, metrics, views));
 		}
 
-		public static void AddUniversalConstraints(this UIView view, string format, NSLayoutFormatOptions options, NSDictionary metrics, NSDictionary views)
+		public static void AddUniversalConstraints(this UIView view, string format, NSLayoutFormatOptions options = default(NSLayoutFormatOptions), NSDictionary metrics = null, NSDictionary views = null)
 		{
 			view.AddConstraints(NSLayoutConstraint.FromVisualFormat(String.Format("H:{0}", format), options, metrics, views));
 			view.AddConstraints(NSLayoutConstraint.FromVisualFormat(String.Format("V:{0}", format), options, metrics, views));
@@ -35,7 +35,7 @@ namespace FPT.Framework.iOS.UI.DropDown
 		}
 
 
-		public static UIWindow VisibleWindow(this UIWindow w)
+		public static UIWindow VisibleWindow()
 		{
 			var currentWindow = UIApplication.SharedApplication.KeyWindow;
 

@@ -23,9 +23,9 @@ namespace FPT.Framework.iOS.UI.DropDown
 			}
 		}
 
-		private bool IsVisible { get; set; } = false;
+		internal bool IsVisible { get; private set; } = false;
 
-		private CGRect KeyboardFrame { get; set; } = CGRect.Empty;
+		internal CGRect KeyboardFrame { get; private set; } = CGRect.Empty;
 
 		private bool IsListening { get; set; } = false;
 

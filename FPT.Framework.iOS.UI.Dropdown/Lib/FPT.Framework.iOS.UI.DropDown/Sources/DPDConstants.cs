@@ -42,8 +42,8 @@ namespace FPT.Framework.iOS.UI.DropDown
 			internal static class Shadow
 			{
 				public static UIColor Color { get { return UIColor.DarkGray;} }
-				public static UIColor Offset { get { return UIColor.DarkGray; } }
-				public static UIColor Opacity { get { return UIColor.DarkGray; } }
+				public static CGSize Offset { get { return CGSize.Empty; } }
+				public static float Opacity { get { return 0.4f; } }
 				public static nfloat Radius { get { return 8f; } }
 			}
 		}
