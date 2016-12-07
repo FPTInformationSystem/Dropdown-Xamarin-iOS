@@ -123,11 +123,5 @@
       <DependentUpon>NiceButton.cs</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Lib\FPT.Framework.iOS.UI.DropDown\FPT.Framework.iOS.UI.DropDown.csproj">
-      <Project>{1927B121-A5A6-4E92-8C1B-9A00A753DFC3}</Project>
-      <Name>FPT.Framework.iOS.UI.DropDown</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
