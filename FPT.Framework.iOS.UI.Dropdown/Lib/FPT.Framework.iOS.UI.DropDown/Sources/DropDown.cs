@@ -31,7 +31,7 @@ namespace FPT.Framework.iOS.UI.DropDown
 
 	#endregion
 
-	class ComputeLayoutTuple
+	public class ComputeLayoutTuple
 	{
 		public nfloat X;
 		public nfloat Y;
@@ -58,6 +58,12 @@ namespace FPT.Framework.iOS.UI.DropDown
 			VisibleHeight = visibleHeight;
 			CanBeDisplayed = canBeDisplayed;
 			Direction = direction;
+		}
+
+		public ComputeLayoutTuple(nfloat offscreenHeight, bool canBeDisplayed)
+		{
+			OffscreenHeight = offscreenHeight;
+			CanBeDisplayed = canBeDisplayed;
 		}
 	}
 
@@ -147,11 +153,11 @@ namespace FPT.Framework.iOS.UI.DropDown
 		{
 			get
 			{
-				return mTopOffset;
+				return mBottomOffset;
 			}
 			set
 			{
-				mTopOffset = value;
+				mBottomOffset = value;
 				SetNeedsUpdateConstraints();
 			}
 		}
@@ -391,7 +397,7 @@ namespace FPT.Framework.iOS.UI.DropDown
 			}
 		}
 
-		private string[] mLocalizationKeysDataSource;
+		private string[] mLocalizationKeysDataSource = new string[0];
 		public string[] LocalizationKeysDataSource
 		{
 			get
@@ -421,8 +427,8 @@ namespace FPT.Framework.iOS.UI.DropDown
 			}
 		}
 
-		private ConfigurationClosure mCustomCellConfiguration;
-		public ConfigurationClosure CustomCellConfiguration
+		private CellConfigurationClosure mCustomCellConfiguration;
+		public CellConfigurationClosure CustomCellConfiguration
 		{
 			get
 			{
@@ -452,7 +458,8 @@ namespace FPT.Framework.iOS.UI.DropDown
 			{
 				if (value == DismissMode.OnTap)
 				{
-
+					var gestureRecognizer = new UITapGestureRecognizer(this, new Selector("dismissableViewTapped"));
+					DismissableView.AddGestureRecognizer(gestureRecognizer);
 				}
 				else
 				{
@@ -510,8 +517,7 @@ namespace FPT.Framework.iOS.UI.DropDown
 		}
 
 		public DropDown(CGRect frame) : base(frame)
-		{
-			Setup();
+		{			Setup();
 		}
 
 		public DropDown(NSCoder coder) : base(coder)
@@ -539,6 +545,8 @@ namespace FPT.Framework.iOS.UI.DropDown
 
 			TableView.Delegate = this;
 			TableView.DataSource = this;
+
+			//TableView.Source = new DropDownTableSource(this);
 
 			(this as IKeyboardEvents).StartListeningToKeyboard();
 		}
@@ -571,7 +579,7 @@ namespace FPT.Framework.iOS.UI.DropDown
 	{
 		public override void UpdateConstraints()
 		{
-			if (DidSetupConstraints)
+			if (!DidSetupConstraints)
 			{
 				SetupConstraints();
 			}
@@ -580,7 +588,7 @@ namespace FPT.Framework.iOS.UI.DropDown
 
 			var layout = ComputeLayout();
 
-			if (layout.CanBeDisplayed)
+			if (!layout.CanBeDisplayed)
 			{
 				base.UpdateConstraints();
 				Hide();
@@ -612,12 +620,65 @@ namespace FPT.Framework.iOS.UI.DropDown
 
 			this.AddUniversalConstraints(
 				format: "|[dismissableView]|",
-				views: NSDictionary.FromObjectAndKey(new NSString("dismissableView"), DismissableView));
+				views: NSDictionary.FromObjectAndKey(DismissableView, new NSString("dismissableView")));
+
+			AddSubview(TableViewContainer);
+			TableViewContainer.TranslatesAutoresizingMaskIntoConstraints = false;
+
+			XConstraint = NSLayoutConstraint.Create(
+				view1: TableViewContainer,
+				attribute1: NSLayoutAttribute.Leading,
+				relation: NSLayoutRelation.Equal,
+				view2: this,
+				attribute2: NSLayoutAttribute.Leading,
+				multiplier: 1,
+				constant: 0);
+			AddConstraint(XConstraint);
+
+			YConstraint = NSLayoutConstraint.Create(
+				view1: TableViewContainer,
+				attribute1: NSLayoutAttribute.Top,
+				relation: NSLayoutRelation.Equal,
+				view2: this,
+				attribute2: NSLayoutAttribute.Top,
+				multiplier: 1,
+				constant: 0);
+			AddConstraint(YConstraint);
+
+			WidthConstraint = NSLayoutConstraint.Create(
+				view1: TableViewContainer,
+				attribute1: NSLayoutAttribute.Width,
+				relation: NSLayoutRelation.Equal,
+				view2: null,
+				attribute2: NSLayoutAttribute.NoAttribute,
+				multiplier: 1,
+				constant: 0);
+			AddConstraint(WidthConstraint);
+
+			HeightConstraint = NSLayoutConstraint.Create(
+				view1: TableViewContainer,
+				attribute1: NSLayoutAttribute.Height,
+				relation: NSLayoutRelation.Equal,
+				view2: null,
+				attribute2: NSLayoutAttribute.NoAttribute,
+				multiplier: 1,
+				constant: 0);
+			AddConstraint(HeightConstraint);
+
+			TableViewContainer.AddSubview(TableView);
+			TableView.TranslatesAutoresizingMaskIntoConstraints = false;
+
+			TableViewContainer.AddUniversalConstraints(format: "|[tableView]|", views: NSDictionary.FromObjectAndKey(TableView, new NSString("tableView")));
 		}
 
 		public override void LayoutSubviews()
 		{
 			base.LayoutSubviews();
+
+			SetNeedsUpdateConstraints();
+
+			var shadowpath = UIBezierPath.FromRoundedRect(TableViewContainer.Bounds, DPDConstants.UI.CornerRadius);
+			TableViewContainer.Layer.ShadowPath = shadowpath.CGPath;
 		}
 
 		private ComputeLayoutTuple ComputeLayout()
@@ -627,8 +688,9 @@ namespace FPT.Framework.iOS.UI.DropDown
 
 			var window = Extensions.VisibleWindow();
 
-			UIView target;
-			AnchorView.TryGetTarget(out target);
+			UIView target = null;
+			if (AnchorView != null)
+				AnchorView.TryGetTarget(out target);
 
 			if (window == null)
 			{
@@ -695,8 +757,9 @@ namespace FPT.Framework.iOS.UI.DropDown
 			nfloat anchorViewX;
 			nfloat anchorViewY;
 
-			UIView target;
-			AnchorView.TryGetTarget(out target);
+			UIView target = null;
+			if (AnchorView != null)
+				AnchorView.TryGetTarget(out target);
 
 			nfloat width;
 			if (target != null)
@@ -797,7 +860,18 @@ namespace FPT.Framework.iOS.UI.DropDown
 
 			for (var index = 0; index < DataSource.Length; index++)
 			{
-				
+				ConfigureCell(TemplateCell, index);
+
+				var rect  = TemplateCell.Bounds;
+				rect.Height = CellHeight;
+				TemplateCell.Bounds = rect;
+
+				var width = TemplateCell.SystemLayoutSizeFittingSize(UILayoutFittingCompressedSize).Width;
+
+				if (width > maxWidth)
+				{
+					maxWidth = width;
+				}
 			}
 
 			return maxWidth;
@@ -843,6 +917,68 @@ namespace FPT.Framework.iOS.UI.DropDown
 	partial class DropDown
 	{
 
+		public ComputeLayoutTuple Show()
+		{
+
+			DropDown target = null;
+			if (DropDown.VisibleDropDown != null)
+				DropDown.VisibleDropDown.TryGetTarget(out target);
+
+			if (this == target)
+			{
+				return new ComputeLayoutTuple(0, true);
+			}
+
+			if (target != null)
+			{
+				target.Cancel();
+			}
+
+			if (WillShowAction != null)
+			{
+				WillShowAction();
+			}
+
+			//DropDown.VisibleDropDown.SetTarget(this);
+			DropDown.VisibleDropDown = new WeakReference<DropDown>(this);
+
+			SetNeedsUpdateConstraints();
+
+			var visibleWindow = Extensions.VisibleWindow();
+			this.TranslatesAutoresizingMaskIntoConstraints = false;
+			if (visibleWindow != null)
+			{
+				visibleWindow.AddSubview(this);
+				visibleWindow.BringSubviewToFront(this);
+				visibleWindow.AddUniversalConstraints(format: "|[dropDown]|", views: NSDictionary.FromObjectAndKey(this, new NSString("dropDown")));
+			}
+			var layout = ComputeLayout();
+
+			if (!layout.CanBeDisplayed)
+			{
+				Hide();
+				return new ComputeLayoutTuple(layout.OffscreenHeight, layout.CanBeDisplayed);
+			}
+
+			Hidden = false;
+			TableViewContainer.Transform = DownScaleTransform;
+
+			UIView.Animate(
+				duration: Animationduration,
+				delay: 0,
+				options: AnimationEntranceOptions,
+				animation: () =>
+				{
+					this.SetShowedState();
+				},
+				completion: null
+			);
+
+			SelectRow(SelectedRowIndex);
+
+			return new ComputeLayoutTuple(layout.OffscreenHeight, layout.CanBeDisplayed);
+		}
+
 		public void Hide()
 		{
 			DropDown dd;
@@ -854,8 +990,20 @@ namespace FPT.Framework.iOS.UI.DropDown
 
 			if (Hidden) return;
 
-			//UIView.Animate(
-			//	duration: 
+			UIView.AnimateNotify(
+				duration: Animationduration,
+				delay: 0,
+				options: AnimationExitOptions,
+				animation: () =>
+				{
+					this.SetHiddentState();
+				},
+				completion: (bool finished ) =>
+				{
+					this.Hidden = true;
+					this.RemoveFromSuperview();
+				});
+
 		}
 
 		private void Cancel()
@@ -942,18 +1090,101 @@ namespace FPT.Framework.iOS.UI.DropDown
 		}
 	}
 
+	//class DropDownTableSource : UITableViewSource
+	//{
+
+	//	DropDown mDropDown;
+
+	//	public DropDownTableSource(DropDown dropDown)
+	//	{
+	//		mDropDown = dropDown;
+	//	}
+
+	//	public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
+	//	{
+	//		var cell = tableView.DequeueReusableCell(DPDConstants.ReusableIdentifier.DropDownCell, indexPath) as DropDownCell;
+	//		var index = (indexPath as NSIndexPath).Row;
+
+	//		mDropDown.ConfigureCell(cell, index);
+
+	//		return cell;
+	//	}
+
+	//	public override Index RowsInSection(UITableView tableview, Index section)
+	//	{
+	//		return mDropDown.DataSource.Length;
+	//	}
+	//}
+
 	partial class DropDown : IUITableViewDataSource, IUITableViewDelegate
 	{
 		public nint RowsInSection(UITableView tableView, nint section)
 		{
-			throw new NotImplementedException();
+			return DataSource.Length;
 		}
 
 		public UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
 		{
-			throw new NotImplementedException();
+			var cell = tableView.DequeueReusableCell(DPDConstants.ReusableIdentifier.DropDownCell, indexPath) as DropDownCell;
+			var index = (indexPath as NSIndexPath).Row;
+
+			ConfigureCell(cell, index);
+
+			return cell;
 		}
+
+		internal void ConfigureCell(DropDownCell cell, int index)
+		{
+			if (index >= 0 && index < LocalizationKeysDataSource.Length)
+			{
+				cell.AccessibilityIdentifier = LocalizationKeysDataSource[index];
+			}
+
+			//Custom or use native
+			cell.TextLabel.TextColor = TextColor;
+			cell.TextLabel.Font = TextFont;
+			cell.SelectedBackgroundColor = SelectionBackgroundColor;
+
+			var cellConfiguration = this.CellConfiguration;
+
+			if (cellConfiguration != null)
+			{
+				cell.TextLabel.Text = cellConfiguration(index, DataSource[index]);
+			}
+			else
+			{
+				cell.TextLabel.Text = DataSource[index];
+			}
+
+			if (CustomCellConfiguration != null)
+			{
+				CustomCellConfiguration(index, DataSource[index], cell);
+			}
+		}
+
+		[Export("tableView:willDisplayCell:forRowAtIndexPath:")]
+		public void WillDisplay(UIKit.UITableView tableView, UIKit.UITableViewCell cell, Foundation.NSIndexPath indexPath)
+		{
+			cell.Selected = (indexPath as NSIndexPath).Row == SelectedRowIndex;
+		}
+
+		[Export("tableView:didSelectRowAtIndexPath:")]
+		public void RowSelected(UIKit.UITableView tableView, Foundation.NSIndexPath indexPath)
+		{
+			SelectedRowIndex = (indexPath as NSIndexPath).Row;
+			if (SelectionAction != null)
+			{
+				SelectionAction(SelectedRowIndex.Value, DataSource[SelectedRowIndex.Value]);
+			}
+
+			//TODO: UIBarButtonItem
+
+			Hide();
+		}
+
 	}
+
+	#region Auto dismiss
 
 	partial class DropDown
 	{
@@ -970,7 +1201,16 @@ namespace FPT.Framework.iOS.UI.DropDown
 				return view;
 			}
 		}
+
+		[Export("dismissableViewTapped")]
+
+		private void DismissableViewTapped()
+		{
+			Cancel();
+		}
 	}
+
+	#endregion
 
 	#region KEYBOARD EVENTS
 

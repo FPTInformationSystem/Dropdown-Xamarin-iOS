@@ -23,7 +23,7 @@ namespace FPT.Framework.iOS.UI.DropDown
 
 	public partial class DropDownCell : UITableViewCell
 	{
-		UIColor SelectedBackgroundColor { get; set;}
+		public UIColor SelectedBackgroundColor { get; set;}
 	}
 
 	#region UI

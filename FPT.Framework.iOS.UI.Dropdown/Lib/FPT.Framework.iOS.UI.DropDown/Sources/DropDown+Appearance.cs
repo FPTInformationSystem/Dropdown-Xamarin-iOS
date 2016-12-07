@@ -3,7 +3,7 @@ namespace FPT.Framework.iOS.UI.DropDown
 {
 	partial class DropDown
 	{
-		public void SetupDefaultAppearance()
+		public static void SetupDefaultAppearance()
 		{
 //			var appearance = UI.DropDown
 		}
