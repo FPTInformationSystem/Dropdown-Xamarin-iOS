@@ -1,6 +1,6 @@
 ![DropDown](Screenshots/logo.png)
 
-[![Twitter: @banhmixaolan](http://img.shields.io/badge/contact-%40kevinh6113-70a1fb.svg?style=flat)](https://twitter.com/banhmixaolan)
+[![Twitter: @banhmixaolan](http://img.shields.io/badge/contact-banhmixaolan-70a1fb.svg?style=flat)](https://twitter.com/banhmixaolan)
 [![License: MIT](http://img.shields.io/badge/license-MIT-70a1fb.svg?style=flat)](https://github.com/AssistoLab/DropDown/blob/master/README.md)
 [![Version](http://img.shields.io/badge/version-1-green.svg?style=flat)](https://github.com/AssistoLab/DropDown)
 [![Nuget](http://img.shields.io/badge/Nuget-unavailable-red.svg?style=flat)](http://cocoadocs.org/docsets/DropDown/)
