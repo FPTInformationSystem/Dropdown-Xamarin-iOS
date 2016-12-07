@@ -1,16 +1,12 @@
-# Dropdown-Xamarin-iOS
-A Material Design drop down for iOS written in C#.
-
 ![DropDown](Screenshots/logo.png)
 
-[![Twitter: @kevinh6113](http://img.shields.io/badge/contact-%40kevinh6113-70a1fb.svg?style=flat)](https://twitter.com/kevinh6113)
+[![Twitter: @banhmixaolan](http://img.shields.io/badge/contact-%40kevinh6113-70a1fb.svg?style=flat)](https://twitter.com/banhmixaolan)
 [![License: MIT](http://img.shields.io/badge/license-MIT-70a1fb.svg?style=flat)](https://github.com/AssistoLab/DropDown/blob/master/README.md)
-[![Version](http://img.shields.io/badge/version-2-green.svg?style=flat)](https://github.com/AssistoLab/DropDown)
-[![Cocoapods](http://img.shields.io/badge/Cocoapods-available-green.svg?style=flat)](http://cocoadocs.org/docsets/DropDown/)
-[![Carthage compatible](https://img.shields.io/badge/CartChage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+[![Version](http://img.shields.io/badge/version-1-green.svg?style=flat)](https://github.com/AssistoLab/DropDown)
+[![Nuget](http://img.shields.io/badge/Nuget-unavailable-red.svg?style=flat)](http://cocoadocs.org/docsets/DropDown/)
 
 
-A Material Design drop down for iOS written in C#.
+A Material Design drop down for iOS written in Swift.
 ***
 
 [![](Screenshots/1.png)](Screenshots/1.png)
