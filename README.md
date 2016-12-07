@@ -2,8 +2,10 @@
 
 [![Twitter: @banhmixaolan](http://img.shields.io/badge/contact-banhmixaolan-70a1fb.svg?style=flat)](https://twitter.com/banhmixaolan)
 [![License: MIT](http://img.shields.io/badge/license-MIT-70a1fb.svg?style=flat)](https://github.com/AssistoLab/DropDown/blob/master/README.md)
-[![Version](http://img.shields.io/badge/version-1-green.svg?style=flat)](https://github.com/AssistoLab/DropDown)
-[![Nuget](http://img.shields.io/badge/Nuget-inProgress-red.svg?style=flat)](http://cocoadocs.org/docsets/DropDown/)
+[![Version](http://img.shields.io/badge/version-1-green.svg?style=flat)](https://github.com/FPTInformationSystem/Dropdown-Xamarin-iOS)
+[![Inspired](http://img.shields.io/badge/inspired-AssistoLab-green.svg?style=flat)](https://github.com/AssistoLab/DropDown)
+[![Nuget](http://img.shields.io/badge/Nuget-inProgress-red.svg?style=flat)](http://)
+[![Document](http://img.shields.io/badge/Document-50%25-green.svg?style=flat)](http://)
 
 
 A Material Design drop down for iOS written in C#.
