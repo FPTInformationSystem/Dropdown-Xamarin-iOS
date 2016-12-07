@@ -3,10 +3,10 @@
 [![Twitter: @banhmixaolan](http://img.shields.io/badge/contact-banhmixaolan-70a1fb.svg?style=flat)](https://twitter.com/banhmixaolan)
 [![License: MIT](http://img.shields.io/badge/license-MIT-70a1fb.svg?style=flat)](https://github.com/AssistoLab/DropDown/blob/master/README.md)
 [![Version](http://img.shields.io/badge/version-1-green.svg?style=flat)](https://github.com/AssistoLab/DropDown)
-[![Nuget](http://img.shields.io/badge/Nuget-unavailable-red.svg?style=flat)](http://cocoadocs.org/docsets/DropDown/)
+[![Nuget](http://img.shields.io/badge/Nuget-inProgress-red.svg?style=flat)](http://cocoadocs.org/docsets/DropDown/)
 
 
-A Material Design drop down for iOS written in Swift.
+A Material Design drop down for iOS written in C#.
 ***
 
 [![](Screenshots/1.png)](Screenshots/1.png)
@@ -20,46 +20,28 @@ To install [CocoaPods](http://www.cocoapods.org), run `sudo gem install cocoapod
 
 ## Installation 📱
 
-This branch supports Swift 3. If you need Swift 2.2: check `swift-2.2` branch.
+We support Xamarin.iOS. DLLs can be found in https://github.com/FPTInformationSystem/Dropdown-Xamarin-iOS/tree/master/FPT.Framework.iOS.UI.Dropdown/Lib/DLLs
 
-### CocoaPods
+### Nugets & Xamarin Components
 
-Use [CocoaPods](http://www.cocoapods.org).
+Sorry, I am currently very busy. I will post it to Nuget and Xamarin Components as soon as possible
 
 1. Add `pod 'DropDown'` to your *Podfile*.
 2. Install the pod(s) by running `pod install`.
 3. Add `import DropDown` in the .swift files where you want to use it
 
-### Carthage
-
-Use [Carthage](https://github.com/Carthage/Carthage).
-
-1. Create a file name `Cartfile`.
-2. Add the line `github "AssistoLab/DropDown"`.
-3. Run `carthage update`.
-4. Drag the built `DropDown.framework` into your Xcode project.
-
 ### Source files
 
-A regular way to use DropDown in your project would be using Embedded Framework. There are two approaches, using source code and adding submodule.
+A regular way to use DropDown in your project would be using Reference Assembly. There are two approaches, using source code and adding submodule.
 
 Add source code:
 
-1. Download the [latest code version](http://github.com/AssistoLab/DropDown/archive/master.zip).
-2. Unzip the download file, copy `DropDown` folder to your project folder
+1. Download the [latest code version](https://github.com/FPTInformationSystem/Dropdown-Xamarin-iOS/archive/master.zip).
+2. Unzip the download file, add `FPT.Framework.iOS.UI.DropDown` project to your project folder
 
-Add submodule
+Add DLLs
 
-1. In your favorite terminal, `cd` into your top-level project directory, and entering the following command:
-``` bash
-$ git submodule add git@github.com:AssistoLab/DropDown.git
-```
-
-After you get the source code either by adding it directly or using submodule, then do the following steps:
-
-- Open `DropDown` folder, and drag `DropDown.xcodeproj` into the file navigator of your app project, under you app project.
-- In Xcode, navigate to the target configuration window by clicking the blue project icon, and selecting the application target under the "Targets" heading in the sidebar.
-- Open "Build Phases" panel in the tab bar at the top of the window, expend the "Target Dependencies" group and add `DropDown.framework` under DropDown icon in the popup window by clicking `+`. Similarly, you can also add `DropDown.framework` in "Embedded Binaries" under "General" tab.
+1. Add the assembly `FPT.Framework.iOS.UI.Dropdown.DLL`
 
 ## Basic usage ✨
 
