@@ -5,10 +5,10 @@ using System.Runtime.CompilerServices;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("FPT.Framework.iOS.UI.DropDown")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Part of FPT.Framework")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
+[assembly: AssemblyCompany("FPT Information System")]
+[assembly: AssemblyProduct("FPT.Framework.iOS.UI.DropDown")]
 [assembly: AssemblyCopyright("phamquan")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
