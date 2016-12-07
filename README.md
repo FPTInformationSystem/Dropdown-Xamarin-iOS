@@ -17,8 +17,7 @@ A Material Design drop down for iOS written in C#.
 
 ## Demo
 
-Do `pod try DropDown` in your console and run the project to try a demo.
-To install [CocoaPods](http://www.cocoapods.org), run `sudo gem install cocoapods` in your console.
+Open Solution. Compile and Run the Demo project.
 
 ## Installation 📱
 
@@ -28,9 +27,6 @@ We support Xamarin.iOS. DLLs can be found in https://github.com/FPTInformationSy
 
 Sorry, I am currently very busy. I will post it to Nuget and Xamarin Components as soon as possible
 
-1. Add `pod 'DropDown'` to your *Podfile*.
-2. Install the pod(s) by running `pod install`.
-3. Add `import DropDown` in the .swift files where you want to use it
 
 ### Source files
 
@@ -48,6 +44,9 @@ Add DLLs
 ## Basic usage ✨
 
 Currently, We don't support UIBarButtonItem yet!!!
+
+We also currently have issue with AnchorView because C# does not allow Extension class + Implement interface for built-in UIKit's class.
+So we use Swift version here instead. We are trying to improve this soon. Note that usage with `(Updating)` maybe not guarantee to work.
 
 ```C#
 var dropDown = new DropDown();
@@ -101,10 +100,7 @@ dropDown.Direction = Direction.Any;
 With `Direction.Any` the drop down will try to displa itself below the anchor view when possible, otherwise above if there is more place than below.
 You can restrict the possible directions by using `Direction.Top` or `Direction.Bottom`.
 
-### Offset
-
-We currently have issue with AnchorView because C# does not allow Extension class + Implement interface for built-in UIKit's class.
-So we use Swift version here instead. We are trying to improve this soon.
+### Offset (Updating)
 
 By default, the drop down will be shown onto to anchor view. It will hide it.
 If you need the drop down to be below your anchor view when the direction of the drop down is `Direction.Bottom`, you can precise an offset like this:
@@ -136,7 +132,7 @@ dropDown.CustomCellConfiguration = (nint index, string item, DropDownCell cell) 
 }
 ```
 
-#### Custom cell
+#### Custom cell (updating)
 
 You can also create your own custom cell, from your .xib file. To have something like this for example:
 <br/>[![](Screenshots/3.png)](Screenshots/3.png)
@@ -182,51 +178,53 @@ For a complete example, don't hesitate to check the demo app and code.
 
 ### Events
 
-```swift
-dropDown.cancelAction = { [unowned self] in
-  println("Drop down dismissed")
+```C#
+dropDown.CancelAction = ()=>
+{
+  Console.WriteLine("Drop down dismissed");
 }
 
-dropDown.willShowAction = { [unowned self] in
-  println("Drop down will show")
+dropDown.WillShowAction = ()=>
+{
+ Console.WriteLine("Drop down will show);
 }
 ```
 
 ### Dismiss modes
 
-```swift
-dropDown.dismissMode = .onTap
+```C#
+dropDown.DismissMode = DismissMode.OnTap;
 ```
 
 You have 3 dismiss mode with the `DismissMode` enum:
 
-- `onTap`: A tap oustide the drop down is needed to dismiss it (Default)
-- `automatic`: No tap is needed to dismiss the drop down. As soon as the user interact with anything else than the drop down, the drop down is dismissed
-- `manual`: The drop down can only be dismissed manually (in code)
+- `OnTap`: A tap oustide the drop down is needed to dismiss it (Default)
+- `Automatic`: No tap is needed to dismiss the drop down. As soon as the user interact with anything else than the drop down, the drop down is dismissed
+- `Manual`: The drop down can only be dismissed manually (in code)
 
 ### Others
 
 You can manually (pre)select a row with:
 
 ```swift
-dropDown.selectRow(at: 3)
+dropDown.SelectRow(index: 3);
 ```
 
 The data source is reloaded automatically when changing the `dataSource` property.
 If needed, you can reload the data source manually by doing:
 
-```swift
-dropDown.reloadAllComponents()
+```C#
+dropDown.ReloadAllComponents();
 ```
 
 You can get info about the selected item at any time with this:
 
-```swift
-dropDown.selectedItem // String?
-dropDown.indexForSelectedRow // Int?
+```C#
+dropDown.SelectedItem // string
+dropDown.IndexForSelectedRow // int?
 ```
 
-## Customize UI 🖌
+## Customize UI 🖌(updating)
 
 You can customize these properties of the drop down:
 
@@ -248,10 +246,16 @@ DropDown.appearance().cellHeight = 60
 
 ## Expert mode 🤓
 
-when calling the `show` method, it returns a tuple like this:
+when calling the `show` method, it returns ComputeLayoutTuple:
 
-```swift
-(canBeDisplayed: Bool, offscreenHeight: CGFloat?)
+```C#
+public nfloat X;
+public nfloat Y;
+public nfloat Width;
+public nfloat OffscreenHeight;
+public nfloat VisibleHeight;
+public bool CanBeDisplayed;
+public Direction Direction;
 ```
 
 - `canBeDisplayed`: Tells if there is enough height to display the drop down. If its value is `false`, the drop down is not showed.
@@ -259,8 +263,9 @@ when calling the `show` method, it returns a tuple like this:
 
 ## Requirements
 
+* Xamarin.iOS
 * Xcode 8+
-* Swift 3.0
+* C# 6.0
 * iOS 8+
 * ARC
 
@@ -270,16 +275,13 @@ This project is under MIT license. For more information, see `LICENSE` file.
 
 ## Credits
 
-DropDown was inspired by the Material Design version of the [Simple Menu](http://www.google.com/design/spec/components/menus.html#menus-simple-menus).
-
-DropDown was done to integrate in a project I work on:<br/>
-[![Assisto](https://assis.to/images/logouser_dark.png)](https://assis.to)
+DropDown was inspired by the Swift version of the [DropDown](https://github.com/AssistoLab/DropDown).
 
 It will be updated when necessary and fixes will be done as soon as discovered to keep it up to date.
 
 I work at<br/>
-[![Pinch](http://pinch.eu/img/pinch-logo.png)](http://pinch.eu)
+[![FPT IS](http://www.fis.com.vn/sites/default/fis/fistheme_logo.jpg)](http://fis.com.vn)
 
-You can find me on Twitter [@kevinh6113](https://twitter.com/kevinh6113).
+You can find me on Twitter [@banhmixaolan](https://twitter.com/banhmixaolan).
 
 Enjoy!
