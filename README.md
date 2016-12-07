@@ -45,44 +45,47 @@ Add DLLs
 
 ## Basic usage ✨
 
-```swift
-let dropDown = DropDown()
+Currently, We don't support UIBarButtonItem yet!!!
+
+```C#
+var dropDown = new DropDown();
 
 // The view to which the drop down will appear on
-dropDown.anchorView = view // UIView or UIBarButtonItem
+dropDown.AnchorView = new WeakReference<UIView>(view); // UIView or UIBarButtonItem
 
 // The list of items to display. Can be changed dynamically
-dropDown.dataSource = ["Car", "Motorcycle", "Truck"]
+dropDown.DataSource = new string[] { "Car", "Motorcycle", "Truck" };
 ```
 
 Optional properties:
 
-```swift
+```C#
 // Action triggered on selection
-dropDown.selectionAction = { [unowned self] (index: Int, item: String) in
-  print("Selected item: \(item) at index: \(index)")
-}
+dropDown.SelectionAction = (nint index, string item) =>
+{
+	Console.WriteLine("Select item: {0} at index: {1}", item, index);
+};
 
 // Will set a custom width instead of the anchor view width
-dropDownLeft.width = 200
+dropDownLeft.Width = 200f;
 ```
 
 Display actions:
 
-```swift
-dropDown.show()
-dropDown.hide()
+```C#
+dropDown.Show();
+dropDown.Hide();
 ```
 
 ## Important ⚠️
 
 Don't forget to put:
 
-```swift
-DropDown.startListeningToKeyboard()
+```C#
+DropDown.StartListeningToKeyboard();
 ```
 
-in your `AppDelegate`'s `didFinishLaunching` method so that the drop down will handle its display with the keyboard displayed even the first time a drop down is showed.
+in your `AppDelegate`'s `DidFinishLaunching` method so that the drop down will handle its display with the keyboard displayed even the first time a drop down is showed.
 
 ## Advanced usage 🛠
 
@@ -90,23 +93,26 @@ in your `AppDelegate`'s `didFinishLaunching` method so that the drop down will h
 
 The drop down can be shown below or above the anchor view with:
 ```swift
-dropDown.direction = .any
+dropDown.Direction = Direction.Any;
 ```
 
-With `.any` the drop down will try to displa itself below the anchor view when possible, otherwise above if there is more place than below.
-You can restrict the possible directions by using `.top` or `.bottom`.
+With `Direction.Any` the drop down will try to displa itself below the anchor view when possible, otherwise above if there is more place than below.
+You can restrict the possible directions by using `Direction.Top` or `Direction.Bottom`.
 
 ### Offset
 
+We currently have issue with AnchorView because C# does not allow Extension class + Implement interface for built-in UIKit's class.
+So we use Swift version here instead. We are trying to improve this soon.
+
 By default, the drop down will be shown onto to anchor view. It will hide it.
-If you need the drop down to be below your anchor view when the direction of the drop down is `.bottom`, you can precise an offset like this:
+If you need the drop down to be below your anchor view when the direction of the drop down is `Direction.Bottom`, you can precise an offset like this:
 
 ```swift
 // Top of drop down will be below the anchorView
-dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
+dropDown.BottomOffset = new CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!)
 ```
 
-If you set the drop down direction to `.any` or `.top` you can also precise the offset when the drop down will shown above like this:
+If you set the drop down direction to `Direction.Any` or `Direction.Top` you can also precise the offset when the drop down will shown above like this:
 
 ```swift
 // When drop down is displayed with `Direction.top`, it will be above the anchorView
@@ -121,9 +127,10 @@ dropDown.topOffset = CGPoint(x: 0, y:-(dropDown.anchorView?.plainView.bounds.hei
 By default, the cells in the drop down have the `dataSource` values as text.
 If you want a custom formatted text for the cells, you can set `cellConfiguration` like this:
 
-```swift
-dropDown.cellConfiguration = { [unowned self] (index, item) in
-  return "- \(item) (option \(index))"
+```C#
+dropDown.CustomCellConfiguration = (nint index, string item, DropDownCell cell) =>
+{
+  
 }
 ```
 
