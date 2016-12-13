@@ -537,7 +537,8 @@ namespace FPT.Framework.iOS.UI.DropDown
 
 			DispatchQueue.MainQueue.DispatchAsync(() =>
 			{
-				this.UpdateFocusIfNeeded();
+				if (this.RespondsToSelector(new Selector("updateFocusIfNeeded")))
+					this.UpdateFocusIfNeeded();
 				this.SetupUI();
 			});
 
